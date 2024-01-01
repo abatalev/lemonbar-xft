@@ -841,11 +841,11 @@ font_load (const char *pattern)
 
     font = xcb_generate_id(c);
 
-    cookie = xcb_open_font_checked(c, font, strlen(pattern), pattern);
-    if (xcb_request_check (c, cookie)) {
-        fprintf(stderr, "Could not load font \"%s\"\n", pattern);
-        return;
-    }
+    // cookie = xcb_open_font_checked(c, font, strlen(pattern), pattern);
+    // if (xcb_request_check (c, cookie)) {
+    //     fprintf(stderr, "Could not load font \"%s\"\n", pattern);
+    //     return;
+    // }
 
     font_t *ret = xcalloc(1, sizeof(font_t));
 
