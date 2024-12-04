@@ -1155,7 +1155,7 @@ get_randr_monitors (void)
         for (j = 0; j < num; j++) {
             // Does I contain J ?
 
-            if (i != j && mons[j].width && !mons[j].name) {
+            if (i != j && mons[j].width) {
                 if (mons[j].x >= mons[i].x && mons[j].x + mons[j].width <= mons[i].x + mons[i].width &&
                     mons[j].y >= mons[i].y && mons[j].y + mons[j].height <= mons[i].y + mons[i].height) {
                     mons[j].width = 0;
@@ -1426,7 +1426,7 @@ init (char *wm_name, char *wm_instance)
 
         // Make sure that the window really gets in the place it's supposed to be
         // Some WM such as Openbox need this
-        xcb_configure_window(c, mon->window, XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y, (const uint32_t []){ mon->x, mon->y });
+        xcb_configure_window(c, mon->window, XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y | XCB_CONFIG_WINDOW_STACK_MODE, (const uint32_t []){ mon->x, mon->y, XCB_STACK_MODE_BELOW });
 
         // Set the WM_NAME atom to the user specified value
         if (wm_name)
