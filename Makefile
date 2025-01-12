@@ -6,11 +6,18 @@ ifneq "$(GIT_DESC)" ""
 	VERSION=$(GIT_DESC)
 endif
 
+UNAME_S := $(shell uname -s)
+
 CC	?= gcc
 CFLAGS += -Wall -std=c99 -Os -DVERSION="\"$(VERSION)\"" -I/usr/include/freetype2 -D_GNU_SOURCE
 LDFLAGS += -lxcb -lxcb-xinerama -lxcb-randr -lX11 -lX11-xcb -lXft -lfreetype -lz -lfontconfig
 CFDEBUG = -g3 -pedantic -Wall -Wunused-parameter -Wlong-long \
           -Wsign-conversion -Wconversion -Wimplicit-function-declaration
+
+ifeq ($(UNAME_S),OpenBSD)
+CFLAGS += -I/usr/X11R6/include -I/usr/X11R6/include/freetype2
+LDFLAGS += -L/usr/X11R6/lib -lfreetype -lz -lfontconfig
+endif
 
 EXEC = lemonbar
 SRCS = lemonbar.c utils.c
