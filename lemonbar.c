@@ -23,6 +23,10 @@
 #include <X11/Xft/Xft.h>
 #include <X11/Xlib-xcb.h>
 
+#ifdef __OpenBSD__
+#include "err.h"
+#endif
+
 // Here bet  dragons
 
 #define max(a,b) ((a) > (b) ? (a) : (b))
@@ -1442,8 +1446,13 @@ init (char *wm_name, char *wm_instance)
             wm_class_len = wm_class_offset + 4;
 
             wm_class = calloc(1, wm_class_len + 1);
+#ifdef __OpenBSD__
+            strlcpy(wm_class, wm_instance, sizeof(wm_class)+1);
+            strlcat(wm_class+wm_class_offset, "Bar", sizeof(wm_class) - wm_class_offset);
+#else
             strcpy(wm_class, wm_instance);
             strcpy(wm_class+wm_class_offset, "Bar");
+#endif
 
             xcb_change_property(c, XCB_PROP_MODE_REPLACE, mon->window, XCB_ATOM_WM_CLASS, XCB_ATOM_STRING, 8, wm_class_len, wm_class);
 
